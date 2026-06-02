@@ -191,14 +191,19 @@ def remove_duplicated_python_modules(original_filelist, new_filelist):
 
 
 def remove_duplicated_files(original_filelist, new_filelist):
-    new_files = []
-    missing_files = []
-
     missing_files = [p for p in original_filelist if p not in new_filelist or original_filelist[p]['type'] != new_filelist[p]['type']]
     new_files = [p for p in new_filelist if p not in original_filelist or original_filelist[p]['type'] != new_filelist[p]['type']]
 
     return missing_files, new_files
 
+
+def remove_locale_files(original_filelist, new_filelist):
+    locale_regex = re.compile('.*/usr/share/locale/.*\\.mo$')
+
+    new_files = [f for f in new_filelist if not locale_regex.match(f)]
+    missing_files = [f for f in original_filelist if not locale_regex.match(f)]
+
+    return missing_files, new_files
 
 def __main__():
     local_snap = sys.argv[1]
@@ -230,6 +235,7 @@ def __main__():
     remove_duplicated_python_modules(upstream_filelist, local_filelist)
 
     missing_files, new_files = remove_duplicated_files(upstream_filelist, local_filelist)
+    missing_files, new_files = remove_locale_files(missing_files, new_files)
 
     missing_files.sort()
     with open("missing.txt", "w") as f:

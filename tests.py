@@ -139,6 +139,20 @@ class TestRemoveUpdatedLibraries(unittest.TestCase):
         self.assertEqual(old_filelist, {})
         self.assertEqual(new_filelist, {})
 
+    def test_remove_translations(self):
+        old_filelist = {
+            '/usr/share/locale/es/test.mo': {'type': 'file'},
+            '/usr/share/locale/es/test2.mo': {'type': 'file'},
+            '/usr/bin/locale/es/test.mo': {'type': 'file'},
+        }
+        new_filelist = {
+            '/usr/bin/locale/es/test2.mo': {'type': 'file'},
+            '/usr/share/locale/es/test2.mo': {'type': 'file'},
+            '/usr/share/locale/es/test3.mo': {'type': 'file'},
+        }
+        old_filelist, new_filelist = find_new_removed_files.remove_locale_files(old_filelist, new_filelist)
+        self.assertEqual(old_filelist, ['/usr/bin/locale/es/test.mo'])
+        self.assertEqual(new_filelist, ['/usr/bin/locale/es/test2.mo'])
 
 if __name__ == '__main__':
     unittest.main()
