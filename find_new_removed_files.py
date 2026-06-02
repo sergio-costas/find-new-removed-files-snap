@@ -196,6 +196,14 @@ def remove_duplicated_files(original_filelist, new_filelist):
 
     return missing_files, new_files
 
+def remove_wacom_files(original_filelist, new_filelist):
+    wacom_regex = re.compile('.*/usr/share/libwacom/.*\\.(tablet|stylus|svg)$')
+
+    new_files = [f for f in new_filelist if not wacom_regex.match(f)]
+    missing_files = [f for f in original_filelist if not wacom_regex.match(f)]
+
+    return missing_files, new_files
+
 
 def remove_locale_files(original_filelist, new_filelist):
     locale_regex = re.compile('.*/usr/share/locale/.*\\.mo$')

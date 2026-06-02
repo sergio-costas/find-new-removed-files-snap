@@ -154,5 +154,23 @@ class TestRemoveUpdatedLibraries(unittest.TestCase):
         self.assertEqual(old_filelist, ['/usr/bin/locale/es/test.mo'])
         self.assertEqual(new_filelist, ['/usr/bin/locale/es/test2.mo'])
 
+
+    def test_remove_libwacom(self):
+        old_filelist = {
+            '/usr/share/libwacom/test1.tablet': {'type': 'file'},
+            '/usr/share/libwacom/layouts/test1.svg': {'type': 'file'},
+            '/usr/share/libwacom/test3.tablet': {'type': 'file'},
+        }
+        new_filelist = {
+            '/usr/share/libwacom/test2.tablet': {'type': 'file'},
+            '/usr/share/libwacom/layouts/test2.svg': {'type': 'file'},
+            '/usr/share/libwacom/test3.tablet': {'type': 'file'},
+        }
+        old_filelist, new_filelist = find_new_removed_files.remove_wacom_files(old_filelist, new_filelist)
+        self.assertEqual(old_filelist, [])
+        self.assertEqual(new_filelist, [])
+
+
+
 if __name__ == '__main__':
     unittest.main()
