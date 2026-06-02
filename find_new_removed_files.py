@@ -246,15 +246,25 @@ def __main__():
     missing_files, new_files = remove_locale_files(missing_files, new_files)
     missing_files, new_files = remove_wacom_files(missing_files, new_files)
 
-    missing_files.sort()
-    with open("missing.txt", "w") as f:
-        for missing in missing_files:
-            f.write(f"{missing}\n")
+    try:
+        os.remove("missing.txt")
+    except FileNotFoundError:
+        pass
+    if len(missing_files) > 0:
+        missing_files.sort()
+        with open("missing.txt", "w") as f:
+            for missing in missing_files:
+                f.write(f"{missing}\n")
 
-    new_files.sort()
-    with open("new.txt", "w") as f:
-        for newfiles in new_files:
-            f.write(f"{newfiles}\n")
+    try:
+        os.remove("new.txt")
+    except FileNotFoundError:
+        pass
+    if len(new_files) > 0:
+        new_files.sort()
+        with open("new.txt", "w") as f:
+            for newfiles in new_files:
+                f.write(f"{newfiles}\n")
 
 if __name__ == "__main__":
     __main__()
