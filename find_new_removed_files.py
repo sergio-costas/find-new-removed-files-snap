@@ -213,6 +213,14 @@ def remove_locale_files(original_filelist, new_filelist):
 
     return missing_files, new_files
 
+def remove_bash_completion_files(original_filelist, new_filelist):
+    bash_completion_regex = re.compile('/usr/share/bash-completion/.*')
+
+    new_files = [f for f in new_filelist if not bash_completion_regex.match(f)]
+    missing_files = [f for f in original_filelist if not bash_completion_regex.match(f)]
+
+    return missing_files, new_files
+
 def __main__():
     local_snap = sys.argv[1]
 
@@ -245,6 +253,7 @@ def __main__():
     missing_files, new_files = remove_duplicated_files(upstream_filelist, local_filelist)
     missing_files, new_files = remove_locale_files(missing_files, new_files)
     missing_files, new_files = remove_wacom_files(missing_files, new_files)
+    missing_files, new_files = remove_bash_completion_files(missing_files, new_files)
 
     try:
         os.remove("missing.txt")

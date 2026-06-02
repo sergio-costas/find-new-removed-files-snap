@@ -170,6 +170,20 @@ class TestRemoveUpdatedLibraries(unittest.TestCase):
         self.assertEqual(old_filelist, [])
         self.assertEqual(new_filelist, [])
 
+    def test_remove_bash_completion_files(self):
+        old_filelist = {
+            '/usr/share/bash-completion/test1.bash': {'type': 'file'},
+            '/usr/share/bash-completion/test2.bash': {'type': 'file'},
+            '/usr/share/bash-completion/test3.bash': {'type': 'file'},
+        }
+        new_filelist = {
+            '/usr/share/bash-completion/test2.bash': {'type': 'file'},
+            '/usr/share/bash-completion/test3.bash': {'type': 'file'},
+            '/usr/share/bash-completion/test4.bash': {'type': 'file'},
+        }
+        old_filelist, new_filelist = find_new_removed_files.remove_bash_completion_files(old_filelist, new_filelist)
+        self.assertEqual(old_filelist, [])
+        self.assertEqual(new_filelist, [])
 
 
 if __name__ == '__main__':
