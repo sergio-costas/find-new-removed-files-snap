@@ -84,8 +84,8 @@ class TestRemoveUpdatedLibraries(unittest.TestCase):
             '/lib/libbaz.so': {'type': 'file'}
         }
         missing_files, new_files = find_new_removed_files.remove_duplicated_files(old_filelist, new_filelist)
-        self.assertEqual(missing_files, ['/lib/libbaz.so'])
-        self.assertEqual(new_files, ['/lib/libbar.so'])
+        self.assertEqual(missing_files, ['/lib/libbar.so'])
+        self.assertEqual(new_files, ['/lib/libbaz.so'])
 
 
     def test_remove_duplicates2(self):
